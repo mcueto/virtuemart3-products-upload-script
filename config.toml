@@ -1,0 +1,6 @@
+[database]
+host = "localhost"
+user = "root"
+password = "root"
+db = "your_database"
+unix_socket = "/opt/lampp/var/mysql/mysql.sock"
