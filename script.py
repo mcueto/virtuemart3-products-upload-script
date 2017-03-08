@@ -41,11 +41,14 @@ def main():
             }
 
             if(product['code'] and product["name"] and product["price"] and product["stock"] and product["category"]):
+                media_id = utils.insert_product_image(connection, connection_cursor, product)
                 category_id = utils.insert_category(connection, connection_cursor, product, 'es_es')
                 baseproduct_id = utils.insert_products(connection, connection_cursor, product)
+                product_id = utils.insert_products_language(connection, connection_cursor, product, baseproduct_id, 'es_es')
                 if(category_id and baseproduct_id):
                     asoc_id = utils.asociate_product_category(connection, connection_cursor, baseproduct_id, category_id)
-                product_id = utils.insert_products_language(connection, connection_cursor, product, baseproduct_id, 'es_es')
+                if(category_id and media_id):
+                    asoc_id = utils.asociate_product_media(connection, connection_cursor, baseproduct_id, media_id)
 
     connection.close()
 

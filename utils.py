@@ -77,3 +77,38 @@ def asociate_product_category(connection, connection_cursor, product_id, categor
         return connection_cursor.lastrowid
     except Exception as e:
         connection.rollback()
+
+
+def insert_product_image(connection, connection_cursor, product):
+    """Create the image data to be associated with the product."""
+    media_url = 'images/stories/virtuemart/product/'
+    imagefile = product["code"]+".png"
+    try:
+        sql_input = """INSERT INTO `joomla_virtuemart_medias` (`file_title`, `file_url`, `file_mimetype`, `file_type`, `published`) VALUES ('{}', '{}', '{}', '{}', '{}');"""
+        sql_input = sql_input.format(
+            imagefile,
+            media_url+imagefile,
+            'image/png',
+            'product',
+            '1'
+        )
+        connection_cursor.execute(sql_input)
+        connection.commit()
+        return connection_cursor.lastrowid
+    except Exception as e:
+        connection.rollback()
+
+
+def asociate_product_media(connection, connection_cursor, product_id, media_id):
+    """Associate product with media(image)."""
+    try:
+        sql_input = """INSERT INTO `joomla_virtuemart_product_medias` (`virtuemart_product_id`, `virtuemart_media_id`) VALUES ('{}', '{}');"""
+        sql_input = sql_input.format(
+            product_id,
+            media_id
+        )
+        connection_cursor.execute(sql_input)
+        connection.commit()
+        return connection_cursor.lastrowid
+    except Exception as e:
+        connection.rollback()
